@@ -100,3 +100,107 @@ Pokemon* cargarDesdeCSV(const string& nombreArchivo, int& cantidad) {
     archivo.close();
     return pokedex;
 }
+
+// Guarda la Pokedex completa de nuevo en el archivo CSV
+void guardarEnCSV(const string& nombreArchivo, Pokemon* pokedex, int cantidad) {
+    ofstream archivo(nombreArchivo);
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir el archivo para guardar datos." << endl;
+        return;
+    }
+
+    // cabecera
+    archivo << "Nº Pokedex,Nombre,Tipo 1,Tipo 2,Total,HP,Ataque,Defensa,Ataque Esp.,Defensa Esp.,Velocidad,Generación,Legendario\n";
+
+    for (int i = 0; i < cantidad; i++) {
+        archivo << pokedex[i].numeroPokedex << ","
+                << pokedex[i].nombre << ","
+                << pokedex[i].tipo1 << ","
+                << pokedex[i].tipo2 << ","
+                << pokedex[i].total << ","
+                << pokedex[i].hp << ","
+                << pokedex[i].ataque << ","
+                << pokedex[i].defensa << ","
+                << pokedex[i].ataqueEsp << ","
+                << pokedex[i].defensaEsp << ","
+                << pokedex[i].velocidad << ","
+                << pokedex[i].generacion << ","
+                << (pokedex[i].legendario ? "True" : "False") << "\n";
+    }
+
+    archivo.close();
+    cout << "-> Datos guardados exitosamente en " << nombreArchivo << endl;
+}
+
+// Muestra la información individual de un Pokémon
+void mostrarPokemon(const Pokemon& p) {
+    cout << "----------------------------------------------------" << endl;
+    cout << "Nº Pokedex : #" << p.numeroPokedex << endl;
+    cout << "Nombre     : " << p.nombre << (p.legendario ? " ★ [LEGENDARIO]" : "") << endl;
+    cout << "Tipo(s)    : " << p.tipo1 << (p.tipo2.empty() ? "" : " / " + p.tipo2) << endl;
+    cout << "Est. Total : " << p.total << endl;
+    cout << "   - HP          : " << p.hp << endl;
+    cout << "   - Ataque      : " << p.ataque << endl;
+    cout << "   - Defensa     : " << p.defensa << endl;
+    cout << "   - Ataque Esp. : " << p.ataqueEsp << endl;
+    cout << "   - Defensa Esp.: " << p.defensaEsp << endl;
+    cout << "   - Velocidad   : " << p.velocidad << endl;
+    cout << "Generación : " << p.generacion << endl;
+    cout << "----------------------------------------------------" << endl;
+}
+
+// Busqueda por número o por fragmento del nombre
+void buscarPokemon(Pokemon* pokedex, int cantidad) {
+    int opcion;
+    cout << "\n1. Buscar por Nº de Pokedex\n2. Buscar por Nombre\nSeleccione opcion: ";
+    cin >> opcion;
+
+    if (opcion == 1) {
+        int id;
+        cout << "Ingrese el Nº Pokedex: ";
+        cin >> id;
+        bool encontrado = false;
+        for (int i = 0; i < cantidad; i++) {
+            if (pokedex[i].numeroPokedex == id) {
+                mostrarPokemon(pokedex[i]);
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) cout << "No se encontró ningún Pokémon con el número " << id << endl;
+    } else if (opcion == 2) {
+        string subNombre;
+        cout << "Ingrese el nombre a buscar: ";
+        cin >> subNombre;
+        subNombre = aMinusculas(subNombre);
+        
+        bool encontrado = false;
+        for (int i = 0; i < cantidad; i++) {
+            if (aMinusculas(pokedex[i].nombre).find(subNombre) != string::npos) {
+                mostrarPokemon(pokedex[i]);
+                encontrado = true;
+            }
+        }
+        if (!encontrado) cout << "No se encontraron coincidencias para '" << subNombre << "'" << endl;
+    }
+}
+
+// Filtra la lista por Tipo (Planta, Fuego, Agua, etc.)
+void filtrarPorTipo(Pokemon* pokedex, int cantidad) {
+    string tipoBusqueda;
+    cout << "Ingrese el tipo a filtrar (ej. Fire, Water, Grass, Poison): ";
+    cin >> tipoBusqueda;
+    tipoBusqueda = aMinusculas(tipoBusqueda);
+
+    int encontrados = 0;
+    cout << "\n--- POKÉMON ENCONTRADOS DEL TIPO: " << tipoBusqueda << " ---" << endl;
+    for (int i = 0; i < cantidad; i++) {
+        if (aMinusculas(pokedex[i].tipo1) == tipoBusqueda || aMinusculas(pokedex[i].tipo2) == tipoBusqueda) {
+            cout << "#" << left << setw(4) << pokedex[i].numeroPokedex 
+                 << setw(15) << pokedex[i].nombre 
+                 << " [" << pokedex[i].tipo1 << (pokedex[i].tipo2.empty() ? "" : "/" + pokedex[i].tipo2) << "]" << endl;
+            encontrados++;
+        }
+    }
+    cout << "Total encontrados: " << encontrados << endl;
+}
