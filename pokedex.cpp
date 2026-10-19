@@ -204,3 +204,48 @@ void filtrarPorTipo(Pokemon* pokedex, int cantidad) {
     }
     cout << "Total encontrados: " << encontrados << endl;
 }
+// Agrega un nuevo Pokémon reasignando dinámicamente la memoria
+void agregarPokemon(Pokemon*& pokedex, int& cantidad, const string& nombreArchivo) {
+    // Crear un nuevo arreglo con espacio para un elemento adicional
+    Pokemon* nuevoArreglo = new Pokemon[cantidad + 1];
+
+    // Copiar elementos previos
+    for (int i = 0; i < cantidad; i++) {
+        nuevoArreglo[i] = pokedex[i];
+    }
+
+    Pokemon nuevo;
+    nuevo.numeroPokedex = cantidad + 1;
+    cout << "\n--- REGISTRAR NUEVO POKÉMON (ID #" << nuevo.numeroPokedex << ") ---" << endl;
+    
+    cout << "Nombre: "; cin >> nuevo.nombre;
+    cout << "Tipo 1: "; cin >> nuevo.tipo1;
+    cout << "Tipo 2 (dejar '-' si no tiene): "; cin >> nuevo.tipo2;
+    if (nuevo.tipo2 == "-") nuevo.tipo2 = "";
+
+    cout << "HP: "; cin >> nuevo.hp;
+    cout << "Ataque: "; cin >> nuevo.ataque;
+    cout << "Defensa: "; cin >> nuevo.defensa;
+    cout << "Ataque Especial: "; cin >> nuevo.ataqueEsp;
+    cout << "Defensa Especial: "; cin >> nuevo.defensaEsp;
+    cout << "Velocidad: "; cin >> nuevo.velocidad;
+    cout << "Generacion: "; cin >> nuevo.generacion;
+    
+    char leg;
+    cout << "¿Es Legendario? (s/n): "; cin >> leg;
+    nuevo.legendario = (leg == 's' || leg == 'S');
+
+    // Calcula el stat Total sumando las estadísticas
+    nuevo.total = nuevo.hp + nuevo.ataque + nuevo.defensa + nuevo.ataqueEsp + nuevo.defensaEsp + nuevo.velocidad;
+
+    // Guarda el nuevo registro en la última posición
+    nuevoArreglo[cantidad] = nuevo;
+
+    // Libera la memoria del antiguo arreglo y redirige el puntero
+    delete[] pokedex;
+    pokedex = nuevoArreglo;
+    cantidad++;
+
+    guardarEnCSV(nombreArchivo, pokedex, cantidad);
+    cout << "¡Pokémon agregado y archivo guardado exitosamente!" << endl;
+}
