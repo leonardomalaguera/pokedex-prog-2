@@ -193,7 +193,7 @@ void filtrarPorTipo(Pokemon* pokedex, int cantidad) {
     tipoBusqueda = aMinusculas(tipoBusqueda);
 
     int encontrados = 0;
-    cout << "\n--- POKÉMON ENCONTRADOS DEL TIPO: " << tipoBusqueda << " ---" << endl;
+    cout << "\n--- POKEMON ENCONTRADOS DEL TIPO: " << tipoBusqueda << " ---" << endl;
     for (int i = 0; i < cantidad; i++) {
         if (aMinusculas(pokedex[i].tipo1) == tipoBusqueda || aMinusculas(pokedex[i].tipo2) == tipoBusqueda) {
             cout << "#" << left << setw(4) << pokedex[i].numeroPokedex 
@@ -216,7 +216,7 @@ void agregarPokemon(Pokemon*& pokedex, int& cantidad, const string& nombreArchiv
 
     Pokemon nuevo;
     nuevo.numeroPokedex = cantidad + 1;
-    cout << "\n--- REGISTRAR NUEVO POKÉMON (ID #" << nuevo.numeroPokedex << ") ---" << endl;
+    cout << "\n--- REGISTRAR NUEVO POKEMON (ID #" << nuevo.numeroPokedex << ") ---" << endl;
     
     cout << "Nombre: "; cin >> nuevo.nombre;
     cout << "Tipo 1: "; cin >> nuevo.tipo1;
@@ -232,7 +232,7 @@ void agregarPokemon(Pokemon*& pokedex, int& cantidad, const string& nombreArchiv
     cout << "Generacion: "; cin >> nuevo.generacion;
     
     char leg;
-    cout << "¿Es Legendario? (s/n): "; cin >> leg;
+    cout << "Es Legendario? (s/n): "; cin >> leg;
     nuevo.legendario = (leg == 's' || leg == 'S');
 
     // Calcula el stat Total sumando las estadísticas
@@ -247,7 +247,7 @@ void agregarPokemon(Pokemon*& pokedex, int& cantidad, const string& nombreArchiv
     cantidad++;
 
     guardarEnCSV(nombreArchivo, pokedex, cantidad);
-    cout << "¡Pokémon agregado y archivo guardado exitosamente!" << endl;
+    cout << "Pokemon agregado y archivo guardado exitosamente!" << endl;
 }
 int main() {
     string archivo = "pokemon_150_registros.csv";
@@ -257,22 +257,22 @@ int main() {
     Pokemon* pokedex = cargarDesdeCSV(archivo, cantidad);
 
     if (pokedex == nullptr) {
-        cout << "No se pudo cargar la base de datos de la Pokédex." << endl;
+        cout << "No se pudo cargar la base de datos de la Pokedex." << endl;
         return 1;
     }
 
     cout << "====================================================" << endl;
-    cout << "                    SISTEMA POKÉDEX                 " << endl;
+    cout << "                    SISTEMA POKEDEX                 " << endl;
     cout << "====================================================" << endl;
     cout << "Registros cargados exitosamente: " << cantidad << endl;
 
     int opcion;
     do {
-        cout << "\n------------------ MENÚ PRINCIPAL ------------------" << endl;
-        cout << "1. Mostrar todos los Pokémon" << endl;
-        cout << "2. Buscar Pokémon (Nº o Nombre)" << endl;
+        cout << "\n------------------ MENU PRINCIPAL ------------------" << endl;
+        cout << "1. Mostrar todos los Pokemon" << endl;
+        cout << "2. Buscar Pokemon (Numero o Nombre)" << endl;
         cout << "3. Filtrar por Tipo" << endl;
-        cout << "4. Registrar nuevo Pokémon" << endl;
+        cout << "4. Registrar nuevo Pokemon" << endl;
         cout << "5. Salir" << endl;
         cout << "Opcion: ";
         cin >> opcion;
@@ -297,7 +297,7 @@ int main() {
                 agregarPokemon(pokedex, cantidad, archivo);
                 break;
             case 5:
-                cout << "Cerrando sistema Pokédex..." << endl;
+                cout << "Cerrando sistema Pokedex" << endl;
                 break;
             default:
                 cout << "Opción inválida. Intente de nuevo." << endl;
